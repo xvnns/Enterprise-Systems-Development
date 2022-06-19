@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:security="http://www.springframework.org/security/tags">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <title>Shopping cart</title>
+</head>
+<body>
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <h5 class="my-0 mr-md-auto font-weight-normal">
+        <a class="p-2 text-dark" th:href="@{'/book/get/all'}">Book Shop</a>
+    </h5>
+    <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" th:href="@{'/shopping-cart/'}" th:if="${currentUser.role.name.toString() == 'USER'}"> Shopping Cart </a>
+        <a id="name" class="p-2 text-dark" href="#" th:text="${currentUser.login}"></a>
+    </nav>
+    <security:authorize access="isAuthenticated()">
+        <a class="btn btn-outline-primary" href="/logout">Выйти</a>
+    </security:authorize>
+</div>
+<div>
+    <div class="row">
+        <div class="col-8">
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th> Author </th>
+                        <th> Name </th>
+                        <th> Quantity </th>
+                        <th> Book price </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${cart.getOrders()}">
+                        <td th:text="${order.book.author}"></td>
+                        <td th:text="${order.book.bookName}"></td>
+                        <td>
+                            <a class="btn" th:href="@{'/order/quantity/increase/' + ${order.id}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                            </a>
+                            <label th:text="${order.quantity}"></label>
+                            <a class="btn" th:href="@{'/order/quantity/reduce/' + ${order.id}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
+                                    <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                                </svg>
+                            </a>
+                        </td>
+                        <td th:text="${order.book.price}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <a class="link-primary" href="/order/get/all/"> All orders </a>
+            </div>
+        </div>
+        <div class="col-4">
+            <h2>
+                Total cost:
+                <span class="label label-default" th:text="${cart.totalCost}"></span>
+            </h2>
+            <a class="btn btn-primary" href="/shopping-cart/make-payment/"> Make a payment </a>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>

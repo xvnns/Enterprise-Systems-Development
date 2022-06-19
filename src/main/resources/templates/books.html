@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:security="http://www.springframework.org/security/tags">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <title>Book shop</title>
+</head>
+<body>
+
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <h5 class="my-0 mr-md-auto font-weight-normal">
+        <a class="p-2 text-dark" th:href="@{'/book/get/all'}">Book Shop</a>
+    </h5>
+    <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" th:href="@{'/shopping-cart/'}" th:if="${currentUser.role.name.toString() == 'USER'}"> Shopping Cart </a>
+        <a id="name" class="p-2 text-dark" href="#" th:text="${currentUser.login}"></a>
+    </nav>
+    <security:authorize access="isAuthenticated()">
+        <a class="btn btn-outline-primary" href="/logout">Выйти</a>
+    </security:authorize>
+</div>
+
+<a class="btn btn-primary" th:href="@{'/book/add'}" th:if="${currentUser.role.name.toString() == 'ADMIN'}"> Add book </a>
+
+<div class="table-responsive">
+    <table class="table table-striped table-sm" >
+        <thead>
+        <tr>
+            <th>Author</th>
+            <th>Book name</th>
+            <th>Price</th>
+            <th>Option</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td>
+                <label th:text="${book.author}"></label>
+                <a class="btn" th:href="@{'/book/change/author/' + ${book.id}}" th:if="${currentUser.role.name.toString() == 'ADMIN'}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                    </svg>
+                </a>
+            </td>
+
+            <td>
+                <label th:text="${book.bookName}"></label>
+                <a class="btn" th:href="@{'/book/change/name/' + ${book.id}}" th:if="${currentUser.role.name.toString() == 'ADMIN'}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                    </svg>
+                </a>
+            </td>
+
+            <td>
+                <label th:text="${book.price}"></label>
+                <a class="btn" th:href="@{'/book/change/price/' + ${book.id}}" th:if="${currentUser.role.name.toString() == 'ADMIN'}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                    </svg>
+                </a>
+            </td>
+
+            <td>
+                <ul class="list-unstyled">
+                    <li th:if="${!cart.containBook(book) && currentUser.role.name.toString() == 'USER'}">
+                        <a class="link-primary" th:href="@{'/book/add-to-shopping-cart/' + ${book.id}}"> Добавить в корзину </a>
+                    </li>
+                    <li th:if="${cart.containBook(book)}">
+                        <a class="link-primary" th:href="@{'/book/delete-from-shopping-cart/' + ${book.id}}"> Удалить из корзины </a>
+                    </li>
+                    <li th:if="${currentUser.role.name.toString() == 'ADMIN'}">
+                        <a class="text-danger" th:href="@{'/book/delete/' + ${book.id}}"> Удалить </a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>

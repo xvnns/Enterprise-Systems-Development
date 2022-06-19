@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet author="xvnns" id="tbl_order" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not> <tableExists tableName="order_" /> </not>
+        </preConditions>
+        <createTable tableName="order_">
+            <column name="id" type="integer" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="status" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="book_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="xvnns" id="fk_order_1" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not> <foreignKeyConstraintExists foreignKeyName="fk_order_1" /> </not>
+        </preConditions>
+        <addForeignKeyConstraint constraintName="fk_order_1"
+                                 baseTableName="order_"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="user_"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet author="xvnns" id="fk_order_2" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not> <foreignKeyConstraintExists foreignKeyName="fk_order_2" /> </not>
+        </preConditions>
+        <addForeignKeyConstraint constraintName="fk_order_2"
+                                 baseTableName="order_"
+                                 baseColumnNames="book_id"
+                                 referencedTableName="book"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
